@@ -4,9 +4,401 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SinWaveLaunch"
+        xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="800" Width="800" MinHeight="800" MinWidth="800" 
+        xmlns:System="clr-namespace:System;assembly=System.Runtime">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="TitleForeground" Color="DodgerBlue"/>
+        <SolidColorBrush x:Key="LabelForeground" Color="White"/>
+        <System:Int32 x:Key="ExportPathGridRow">1000</System:Int32>
+        <System:Double x:Key="H2fontSize">16</System:Double>
+        <FontWeight x:Key="H2bold">Bold</FontWeight>
+        <System:Double x:Key="BoxHeight">20</System:Double>
+        <Thickness x:Key="BoxMargin">5,2,5,2</Thickness>
+    </Window.Resources>
+
+    <Window.Background>
+        <SolidColorBrush Color="#FF202020"/>
+    </Window.Background>
+    
+    <Window.DataContext>
+        <local:MainChart/>
+    </Window.DataContext>
+    
+    <Grid Margin="10">
+        <!-- Grid Definition -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> <!-- 0 -->
+            <RowDefinition Height="Auto"/> <!-- 1 -->
+            <RowDefinition Height="Auto"/> <!-- 2 -->
+            <RowDefinition Height="Auto"/> <!-- 3 -->
+            <RowDefinition Height="Auto"/> <!-- 4 -->
+            <RowDefinition Height="Auto"/> <!-- 5 -->
+            <RowDefinition Height="Auto"/> <!-- 6 -->
+            <RowDefinition Height="Auto"/> <!-- 7 -->
+            <RowDefinition Height="Auto"/> <!-- 8 -->
+            <RowDefinition Height="*"/>    <!-- 9 -->
+            <RowDefinition Height="Auto"/> <!-- 10 -->
+        </Grid.RowDefinitions>
+
+        <!-- Logo and Title -->
+        <StackPanel Grid.ColumnSpan="1000" Orientation="Horizontal" Grid.Row="0">
+            <Image x:Name="imgLogo" Height="50" Width="50" Source="/LogoOnly.png" Stretch="Fill" HorizontalAlignment="Left"/>
+            <Label x:Name="lblTitle" Content="Sine Wave Generator with Launch Wave" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,0,0" FontFamily="Consolas" FontWeight="Bold" FontSize="24" Foreground="DodgerBlue"></Label>
+        </StackPanel>
+
+        <!-- Launch Wave setting -->
+        <Label FontWeight="{DynamicResource H2bold}" FontSize="{DynamicResource H2fontSize}" Foreground="{DynamicResource TitleForeground}" x:Name="lblLaunchWaveTitle" HorizontalContentAlignment="Center" Content="Launch Wave" Grid.Row="1" Grid.ColumnSpan="2"/>
+        
+        <Label x:Name="lblLaunchWaveform" 
+               Grid.Row="2"
+               Grid.Column="0" 
+               Content="Waveform"
+               Foreground="{DynamicResource LabelForeground}" 
+               HorizontalAlignment="Right" 
+               VerticalAlignment="Center" />
+        <ComboBox x:Name="cbbLaunchWaveform" 
+                  Grid.Row="2"
+                  Grid.Column="1"
+                  Margin="{DynamicResource BoxMargin}"
+                  Height="{DynamicResource BoxHeight}"/>
+
+        <Label x:Name="lblLaunchAmplitude"
+               Grid.Row="3"
+               Grid.Column="0"
+               Content="Amplitude factor [%]"
+               Foreground="{DynamicResource LabelForeground}" 
+               HorizontalAlignment="Right" 
+               VerticalAlignment="Center" />
+        <TextBox x:Name="txbLaunchAmplitude"
+                 Grid.Row="3"
+                 Grid.Column="1"
+                 Margin="{DynamicResource BoxMargin}"
+                 Height="{DynamicResource BoxHeight}"
+                 VerticalContentAlignment="Center"/>
+
+        <Label x:Name="lblLaunchCosFreqMultiplier"
+               Grid.Row="4"
+               Grid.Column="0"
+               Content="Cos f factor"
+               Foreground="{DynamicResource LabelForeground}"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Center" />
+        <TextBox x:Name="txbLaunchCosFreqMultiplier"
+                 Grid.Row="4"
+                 Grid.Column="1"
+                 Margin="{DynamicResource BoxMargin}"
+                 Height="{DynamicResource BoxHeight}"
+                 VerticalContentAlignment="Center"/>
+
+        <Label x:Name="lblLaunchSinFreqMultiplier"
+               Grid.Row="5"
+               Grid.Column="0"
+               Content="Sin f factor"
+               Foreground="{DynamicResource LabelForeground}"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Center" />
+        <TextBox x:Name="txbLaunchSinFreqMultiplier"
+                 Grid.Row="5"
+                 Grid.Column="1"
+                 Margin="{DynamicResource BoxMargin}"
+                 Height="{DynamicResource BoxHeight}"
+                 VerticalContentAlignment="Center"/>
+
+        <Label x:Name="lblLaunchCosMaxRate"
+               Grid.Row="6"
+               Grid.Column="0"
+               Content="Cos max rate"
+               Foreground="{DynamicResource LabelForeground}"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Center" />
+        <TextBox x:Name="txbLaunchCosMaxRate"
+                 Grid.Row="6"
+                 Grid.Column="1"
+                 Margin="{DynamicResource BoxMargin}"
+                 Height="{DynamicResource BoxHeight}"
+                 VerticalContentAlignment="Center"/>
+
+        <Label x:Name="lblLaunchSinMaxRate"
+               Grid.Row="7"
+               Grid.Column="0"
+               Content="Sin max rate"
+               Foreground="{DynamicResource LabelForeground}"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Center" />
+        <TextBox x:Name="txbLaunchSinMaxRate"
+                 Grid.Row="7"
+                 Grid.Column="1"
+                 Margin="{DynamicResource BoxMargin}"
+                 Height="{DynamicResource BoxHeight}"
+                 VerticalContentAlignment="Center"/>
+
+        <Label x:Name="lblLaunchInfo"
+               Grid.Row="8"
+               Grid.Column="0"
+               Grid.ColumnSpan="2"
+               Content="Time length: Cos 10s; Sin 10s; Total 10s"
+               Foreground="{DynamicResource LabelForeground}"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center" />
+
+
+        <!-- Main Wave setting -->
+        <Label x:Name="lblMainWaveTitle"
+               Grid.Row="1"
+               Grid.Column="2"
+               Grid.ColumnSpan="2"
+               Content="Main Wave"
+               FontWeight="{DynamicResource H2bold}"
+               FontSize="{DynamicResource H2fontSize}"
+               Foreground="{DynamicResource TitleForeground}"
+               HorizontalContentAlignment="Center"  />
+
+        <Label x:Name="lblMainUnit" 
+               Grid.Row="2"
+               Grid.Column="2" 
+               Content="Phisical unit"
+               Foreground="{DynamicResource LabelForeground}" 
+               HorizontalAlignment="Right" 
+               VerticalAlignment="Center" />
+        <TextBox x:Name="cbbMainUnit" 
+                 Grid.Row="2"
+                 Grid.Column="3"
+                 Text="mm"
+                 Margin="{DynamicResource BoxMargin}"
+                 Height="{DynamicResource BoxHeight}"/>
+
+        <Label x:Name="lblMainAmplitude"
+               Grid.Row="3"
+               Grid.Column="2"
+               Content="Amplitude"
+               Foreground="{DynamicResource LabelForeground}" 
+               HorizontalAlignment="Right" 
+               VerticalAlignment="Center" />
+        <TextBox x:Name="txbMainAmplitude"
+                 Grid.Row="3"
+                 Grid.Column="3"
+                 Margin="{DynamicResource BoxMargin}"
+                 Height="{DynamicResource BoxHeight}"
+                 VerticalContentAlignment="Center"/>
+
+        <Label x:Name="lblMainRate"
+               Grid.Row="4"
+               Grid.Column="2"
+               Content="Max Rate"
+               Foreground="{DynamicResource LabelForeground}"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Center" />
+        <TextBox x:Name="txbMainRate"
+                 Grid.Row="4"
+                 Grid.Column="3"
+                 Margin="{DynamicResource BoxMargin}"
+                 Height="{DynamicResource BoxHeight}"
+                 VerticalContentAlignment="Center"/>
+
+        <Label x:Name="lblMainFrequency"
+               Grid.Row="5"
+               Grid.Column="2"
+               Content="Freqeuncy"
+               Foreground="{DynamicResource LabelForeground}"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Center" />
+        <TextBox x:Name="txbMainFrequency"
+                 Grid.Row="5"
+                 Grid.Column="3"
+                 Margin="{DynamicResource BoxMargin}"
+                 Height="{DynamicResource BoxHeight}"
+                 VerticalContentAlignment="Center"/>
+
+        <Label x:Name="lblMainCycleNum"
+               Grid.Row="6"
+               Grid.Column="2"
+               Content="# Cycle"
+               Foreground="{DynamicResource LabelForeground}"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Center" />
+        <TextBox x:Name="txbMainCycleNum"
+                 Grid.Row="6"
+                 Grid.Column="3"
+                 Margin="{DynamicResource BoxMargin}"
+                 Height="{DynamicResource BoxHeight}"
+                 VerticalContentAlignment="Center"/>
+
+        <Label x:Name="lblMainTimeResolution"
+               Grid.Row="7"
+               Grid.Column="2"
+               Content="Time Resolution"
+               Foreground="{DynamicResource LabelForeground}"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Center" />
+        <TextBox x:Name="txbMainTimeResolution"
+                 Grid.Row="7"
+                 Grid.Column="3"
+                 Margin="{DynamicResource BoxMargin}"
+                 Height="{DynamicResource BoxHeight}"
+                 VerticalContentAlignment="Center"/>
+
+        <Label x:Name="lblMainInfo"
+               Grid.Row="8"
+               Grid.Column="2"
+               Grid.ColumnSpan="2"
+               Content="Time length: Cycle 10s; Total 10s"
+               Foreground="{DynamicResource LabelForeground}"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center" />
+
+
+
+        <!-- Exit Wave setting -->
+        <Label FontWeight="{DynamicResource H2bold}" 
+               FontSize="{DynamicResource H2fontSize}" 
+               Foreground="{DynamicResource TitleForeground}" 
+               x:Name="lblExitWaveTitle"
+               HorizontalContentAlignment="Center"
+               Content="Exit Wave"
+               Grid.Row="1"
+               Grid.Column="4"
+               Grid.ColumnSpan="2"/>
+
+        <Label x:Name="lblExitWaveform" 
+               Grid.Row="2"
+               Grid.Column="4" 
+               Content="Waveform"
+               Foreground="{DynamicResource LabelForeground}" 
+               HorizontalAlignment="Right" 
+               VerticalAlignment="Center" />
+        <ComboBox x:Name="cbbExitWaveform" 
+                  Grid.Row="2"
+                  Grid.Column="5"
+                  Margin="{DynamicResource BoxMargin}"
+                  Height="{DynamicResource BoxHeight}"/>
+
+        <Label x:Name="lblExitAmplitude"
+               Grid.Row="3"
+               Grid.Column="4"
+               Content="Amplitude factor [%]"
+               Foreground="{DynamicResource LabelForeground}" 
+               HorizontalAlignment="Right" 
+               VerticalAlignment="Center" />
+        <TextBox x:Name="txbExitAmplitude"
+                 Grid.Row="3"
+                 Grid.Column="5"
+                 Margin="{DynamicResource BoxMargin}"
+                 Height="{DynamicResource BoxHeight}"
+                 VerticalContentAlignment="Center"/>
+
+        <Label x:Name="lblExitCosFreqMultiplier"
+               Grid.Row="4"
+               Grid.Column="4"
+               Content="Cos f factor"
+               Foreground="{DynamicResource LabelForeground}"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Center" />
+        <TextBox x:Name="txbExitCosFreqMultiplier"
+                 Grid.Row="4"
+                 Grid.Column="5"
+                 Margin="{DynamicResource BoxMargin}"
+                 Height="{DynamicResource BoxHeight}"
+                 VerticalContentAlignment="Center"/>
+
+        <Label x:Name="lblExitSinFreqMultiplier"
+               Grid.Row="5"
+               Grid.Column="4"
+               Content="Sin f factor"
+               Foreground="{DynamicResource LabelForeground}"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Center" />
+        <TextBox x:Name="txbExitSinFreqMultiplier"
+                 Grid.Row="5"
+                 Grid.Column="5"
+                 Margin="{DynamicResource BoxMargin}"
+                 Height="{DynamicResource BoxHeight}"
+                 VerticalContentAlignment="Center"/>
+
+        <Label x:Name="lblExitCosMaxRate"
+               Grid.Row="6"
+               Grid.Column="4"
+               Content="Cos max rate"
+               Foreground="{DynamicResource LabelForeground}"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Center" />
+        <TextBox x:Name="txbExitCosMaxRate"
+                 Grid.Row="6"
+                 Grid.Column="5"
+                 Margin="{DynamicResource BoxMargin}"
+                 Height="{DynamicResource BoxHeight}"
+                 VerticalContentAlignment="Center"/>
+
+        <Label x:Name="lblExitSinMaxRate"
+               Grid.Row="7"
+               Grid.Column="4"
+               Content="Sin max rate"
+               Foreground="{DynamicResource LabelForeground}"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Center" />
+        <TextBox x:Name="txbExitSinMaxRate"
+                 Grid.Row="7"
+                 Grid.Column="5"
+                 Margin="{DynamicResource BoxMargin}"
+                 Height="{DynamicResource BoxHeight}"
+                 VerticalContentAlignment="Center"/>
+
+        <Label x:Name="lblExitInfo"
+               Grid.Row="8"
+               Grid.Column="4"
+               Grid.ColumnSpan="2"
+               Content="Time length: Cos 10s; Sin 10s; Total 10s"
+               Foreground="{DynamicResource LabelForeground}"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center" />
+
+
+
+        <!-- Wave plot -->
+        <lvc:CartesianChart
+            Grid.Row="9"
+            Grid.ColumnSpan="1000"
+            Margin="5"
+            Series="{Binding MainChartSeries}" MinHeight="200"
+            ZoomMode="Both"/>
+
+        <!-- Export interface -->
+        <Label x:Name="lblExportPath"
+               Content="Export path"
+               HorizontalAlignment="Right"
+               Foreground="{DynamicResource LabelForeground}"
+               Grid.Row="{DynamicResource ExportPathGridRow}"/>
+        <TextBox x:Name="tbxExportPath"
+                 Text="Path" 
+                 VerticalContentAlignment="Center" 
+                 Margin="5,0,5,0" 
+                 Padding="5,0,5,0" 
+                 Grid.Row="{DynamicResource ExportPathGridRow}" 
+                 Grid.Column="1" 
+                 Grid.ColumnSpan="4"/>
+        <Button x:Name="btnExport" 
+                Content="Export" 
+                Background="DodgerBlue" 
+                Foreground="White" 
+                Padding="5,1,5,1" 
+                Grid.Row="{DynamicResource ExportPathGridRow}" 
+                Grid.Column="6" 
+                Margin="5,0,5,0" 
+                MaxWidth="150"/>
+
+        <!-- Separator -->
+        <Rectangle Grid.Column="2" HorizontalAlignment="Left" Grid.Row="1" Grid.RowSpan="8" Stroke="Black"  Width="6" Fill="DodgerBlue" Margin="-3,0,0,0"/>
+        <Rectangle Grid.Column="4" HorizontalAlignment="Left" Grid.Row="1" Grid.RowSpan="8" Stroke="Black"  Width="6" Fill="DodgerBlue" Margin="-3,0,0,0"/>
 
     </Grid>
 </Window>

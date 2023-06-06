@@ -4,6 +4,8 @@
              xmlns:local="clr-namespace:SinWaveLaunch"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Style TargetType="Label">
+            <Setter Property="FontFamily" Value="Arial"/>
+        </Style>
     </Application.Resources>
 </Application>
